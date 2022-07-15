@@ -118,6 +118,7 @@ def main():
 
     masks_per_class = len([image_path for image_path in os.listdir(os.path.join(masks_path, "class_0"))])
     masks = load_masks(masks_path, num_classes, masks_per_class)
+    mask_counters = [0 for _ in range(num_classes)]
 
     model = load_model(model_name, num_classes, device)
     model.load_state_dict(torch.load(checkpoint_path))
@@ -138,13 +139,19 @@ def main():
             data = data.to(device)
             targets = targets.to(device)
 
+            mask_tensor_batch = []
+
+            for target in targets:
+                mask_tensor_batch.append(mask_transform(masks[target][mask_counters[target]]).to(device))
+                mask_counters[target] = mask_counters[target] % (masks_per_class - 1) + 1
+
             treating_stage.apply_noise()
             outputs = model(data)
             treating_stage.remove_noise()
 
             loss_original = criterion(outputs, targets)
             loss_channel = treating_stage.channel_loss(outputs, targets)
-            loss_spatial = treating_stage.spatial_loss(outputs, targets, masks)
+            loss_spatial = treating_stage.spatial_loss(outputs, targets, mask_tensor_batch)
 
             loss_all = loss_original + loss_channel + loss_spatial
 

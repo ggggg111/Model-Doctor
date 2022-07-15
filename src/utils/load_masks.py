@@ -1,6 +1,7 @@
 import os
 
 import cv2
+import numpy as np
 
 
 def load_masks(masks_path, num_classes, masks_per_class):
@@ -14,4 +15,4 @@ def load_masks(masks_path, num_classes, masks_per_class):
             mask = cv2.cvtColor(mask, cv2.COLOR_BGR2RGB)
             masks[class_index][mask_index] = mask
 
-    return masks
+    return np.asarray(masks)
