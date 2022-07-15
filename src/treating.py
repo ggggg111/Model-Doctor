@@ -63,7 +63,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--epochs", type=int, default=50,
+    "--epochs", type=int, default=100,
     help="Maximum epochs used for training"
 )
 
