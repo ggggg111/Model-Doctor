@@ -1,0 +1,1 @@
+Low confidence image annotations are stored here.

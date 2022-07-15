@@ -1,0 +1,1 @@
+Low confidence images are stored here.

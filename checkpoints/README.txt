@@ -1,0 +1,1 @@
+This folder has been created to save the checkpoints here.

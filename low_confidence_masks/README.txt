@@ -1,0 +1,1 @@
+Low confidence image masks are stored here.
