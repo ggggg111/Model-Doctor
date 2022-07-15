@@ -45,7 +45,7 @@ class TreatingStage:
         return loss_channel
 
     def spatial_loss(self, outputs, classes, masks):
-        #TODO
+
 
         return torch.tensor([0]).to(self.device)
 

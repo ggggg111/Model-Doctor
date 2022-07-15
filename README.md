@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is an unnoficial implementation of the [Model Doctor: A Simple Gradient Aggregation Strategy for Diagnosing and
+This is an unofficial implementation of the [Model Doctor: A Simple Gradient Aggregation Strategy for Diagnosing and
 Treating CNN Classifiers](https://arxiv.org/abs/2112.04934).
 
 ## Requirements and Installation
