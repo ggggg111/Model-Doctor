@@ -38,14 +38,16 @@ class TreatingStage:
 
         first_term_batch = 0
 
+        loss_channel = torch.tensor([0]).to(self.device)
+
         #TODO
 
         return loss_channel
 
-    def spatial_loss(self, outputs, classes):
+    def spatial_loss(self, outputs, classes, masks):
         #TODO
 
-        return torch.tensor(0)
+        return torch.tensor([0]).to(self.device)
 
     def apply_noise(self):
         for module_noise in self.modules_noise:

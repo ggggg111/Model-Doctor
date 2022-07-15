@@ -139,7 +139,6 @@ def main():
                 confidence = confidence.item()
                 prediction = prediction.item()
 
-                #if prediction == target and confidence < max_confidence and confidence > min_confidence and image_class_counters[target] < num_images:
                 if confidence < max_confidence and confidence > min_confidence and image_class_counters[target] < num_images:
                     image_path = class_path_dir + f"{target}"
                     save_image(data[index], os.path.join(image_path, f"{image_class_counters[target]}" + ".png"))
