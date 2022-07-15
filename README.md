@@ -16,7 +16,7 @@ conda create -n modeldoctor python=3.9
 conda activate modeldoctor
 ```
 
-Next, run the [requirements.txt](./requirements.txt) file to install the necessary the necessary third-party packages with their respective versions.
+Next, run the [requirements.txt](./requirements.txt) file to install the necessary third-party packages with their respective versions.
 
 ```
 pip install -r requirements.txt
