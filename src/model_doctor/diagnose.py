@@ -10,10 +10,9 @@ from .noise_hook import NoiseHook
 
 
 class DiagnoseStage:
-    def __init__(self, model, num_classes, samples_per_class, delta, device):
+    def __init__(self, model, num_classes, delta, device):
         self.model = model
         self.num_classes = num_classes
-        self.samples_per_class = samples_per_class
         self.delta = delta
         self.device = device
 

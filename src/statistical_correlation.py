@@ -2,21 +2,22 @@ import os
 import argparse
 
 import torch
+import cv2
+import torch.nn.functional as F
 import torchvision.transforms as T
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-from torch.utils.data import DataLoader
-from torchvision.datasets import ImageFolder
-from tqdm import tqdm
-
-from model_doctor import DiagnoseStage
+from model_doctor import IndividualGradients
+from utils import load_dataset
 from utils import load_model
 
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
-    "--high_confidence_samples_path", type=str, default="high_confidence_samples",
-    help="Directory path to the high confidence images"
+    "--data_path", type=str, default=os.path.join("d:", "Datasets", "Detection"),
+    help="Directory path to the dataset"
 )
 
 parser.add_argument(
@@ -43,7 +44,7 @@ parser.add_argument(
 
 parser.add_argument(
     "--checkpoints_path", type=str, default="checkpoints",
-    help="Path to where the checkpoint is stored"
+    help="Path to where the checkpoints are stored"
 )
 
 parser.add_argument(
@@ -52,67 +53,58 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--gradients_path", type=str, default="gradients",
-    help="Path to where the gradients will be stored"
+    "--image_path", type=str, required=True,
+    help="Image path to view the statistical correlation between the category and convolution kernels"
 )
 
 parser.add_argument(
-    "--delta", type=int, default=0.1,
-    help="Delta value for the noise"
+    "--image_class", type=int, required=True,
+    help="Class of the image"
 )
-
 
 args = parser.parse_args()
 
 
 def main():
-    high_confidence_samples_path = args.high_confidence_samples_path
+    data_path = args.data_path
     dataset = args.dataset
-    high_confidence_samples_path = os.path.join(high_confidence_samples_path, dataset)
     device = torch.device(args.device)
     model_name = args.model_name
     checkpoints_path = os.path.join(args.checkpoints_path, dataset)
     checkpoint_file = args.checkpoint_file
     checkpoint_path = os.path.join(checkpoints_path, checkpoint_file)
-    gradients_path = os.path.join(args.gradients_path, dataset, model_name)
-    delta = args.delta
+    image_path = args.image_path
+    image_class = args.image_class
 
-    if not os.path.exists(gradients_path):
-        os.makedirs(gradients_path)
+    test_data = load_dataset(data_path, dataset, "test")
+    num_classes = len(test_data.classes)
+
+    image = cv2.imread(image_path)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     transform = T.Compose([
         T.ToTensor()
     ])
 
-    high_confidence_data = ImageFolder(
-        root=high_confidence_samples_path,
-        transform=transform,
-    )
-
-    num_classes = len(high_confidence_data.classes)
-
-    high_confidence_loader = DataLoader(
-        high_confidence_data,
-        shuffle=False
-    )
+    image_tensor = transform(image)
 
     model = load_model(model_name, num_classes, device)
     model.load_state_dict(torch.load(checkpoint_path))
     model.eval()
 
-    diagnose_stage = DiagnoseStage(model, num_classes, delta, device)
+    individual_gradients = IndividualGradients(model, device)
 
-    for data, targets in tqdm(high_confidence_loader):
-        data = data.to(device)
-        targets = targets.to(device)
+    class_tensor = torch.tensor(image_class).to(device).unsqueeze(0)
 
-        diagnose_stage.apply_noise()
-        outputs = model(data)
-        diagnose_stage.remove_noise()
+    image_tensor = image_tensor.to(device)
+    image_tensor = torch.unsqueeze(image_tensor, 0)
 
-        diagnose_stage.compute_gradients(outputs, targets)
+    output = model(image_tensor)
 
-    diagnose_stage.save_gradients(gradients_path)
+    gradients = individual_gradients.compute_individual_gradients(output, class_tensor)
+
+    sns.heatmap(gradients.cpu().detach().numpy(), linewidth=0.5)
+    plt.show()
 
 
 if __name__ == "__main__":

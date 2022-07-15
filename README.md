@@ -121,6 +121,22 @@ python src\diagnosing.py
     -- delta [delta]
 ```
 
+### View correlation distribution
+
+The average correlation distribution of the feature maps of the last 2D convolutional layer of the model can be viewed as a heatmap. The sample image and its class have to be given in the command.
+
+```
+python src\statistical_correlation.py
+    -- data_path [data_path]
+    -- dataset [dataset]
+    -- device [device]
+    -- model_name [model_name]
+    -- checkpoints_path [checkpoints_path]
+    -- checkpoint_file [checkpoint_file]
+    -- image_path [image_path]
+    -- image_class [image_class]
+```
+
 ### Train on Model Doctor
 
 Having obtained all the previous data, now we can train the model on the Model Doctor. The new loss function can be now used, which is the sum of the original loss, the channel loss, and the spatial loss. When the training finishes, the saved model doesn't override the original one, but rather saves a new model in the original path but with a different file name.
