@@ -130,3 +130,10 @@ dmypy.json
 
 # Custom
 *.pt
+
+checkpoints/*/*
+gradients/*/*
+high_confidence_samples/*/*
+low_confidence_annotations/*/*
+low_confidence_masks/*/*
+low_confidence_samples/*/*

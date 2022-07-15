@@ -2,6 +2,8 @@ import os
 import argparse
 
 import torch
+import cv2
+import torchvision.transforms as T
 
 from torch.utils.data import DataLoader
 from torch.nn import CrossEntropyLoss
@@ -11,6 +13,7 @@ from tqdm import tqdm
 from model_doctor import TreatingStage
 from utils import load_dataset
 from utils import load_model
+from utils import load_masks
 
 
 parser = argparse.ArgumentParser()
@@ -69,7 +72,12 @@ parser.add_argument(
 
 parser.add_argument(
     "--gradients_path", type=str, default="gradients",
-    help="Path to where the gradients are be stored"
+    help="Path to where the gradients are stored"
+)
+
+parser.add_argument(
+    "--masks_path", type=str, default="low_confidence_masks",
+    help="Path to where the masks are stored"
 )
 
 parser.add_argument(
@@ -93,6 +101,7 @@ def main():
     epochs = args.epochs
     gradients_path = os.path.join(args.gradients_path, dataset, model_name)
     delta = args.delta
+    masks_path = os.path.join(args.masks_path, dataset)
 
     train_data = load_dataset(data_path, dataset, "train")
     num_classes = len(train_data.classes)
@@ -102,6 +111,13 @@ def main():
         batch_size=batch_size,
         shuffle=True
     )
+
+    mask_transform = T.Compose([
+        T.ToTensor()
+    ])
+
+    masks_per_class = len([image_path for image_path in os.listdir(os.path.join(masks_path, "class_0"))])
+    masks = load_masks(masks_path, num_classes, masks_per_class)
 
     model = load_model(model_name, num_classes, device)
     model.load_state_dict(torch.load(checkpoint_path))
@@ -128,7 +144,7 @@ def main():
 
             loss_original = criterion(outputs, targets)
             loss_channel = treating_stage.channel_loss(outputs, targets)
-            loss_spatial = treating_stage.spatial_loss(outputs, targets)
+            loss_spatial = treating_stage.spatial_loss(outputs, targets, masks)
 
             loss_all = loss_original + loss_channel + loss_spatial
 

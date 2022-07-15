@@ -1,7 +1,5 @@
 import torch
 import torch.nn as nn
-import torchvision.transforms as T
-import numpy as np
 
 from utils import load_model_layers
 from .gradient_hook import GradientHook
