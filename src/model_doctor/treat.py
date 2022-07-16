@@ -29,8 +29,8 @@ class TreatingStage:
     def channel_loss(self, outputs, targets, threshold=1.0):
         loss_channel = 0
 
-        criterion_target = nn.CrossEntropyLoss()
-        loss_target = criterion_target(outputs, targets)
+        criterion = nn.CrossEntropyLoss()
+        loss_target = criterion(outputs, targets)
 
         gradients_target = torch.autograd.grad(loss_target, self.module_gradient.output, retain_graph=True)
         gradients_target = torch.abs(gradients_target[0])
@@ -39,23 +39,20 @@ class TreatingStage:
         outputs_sm = F.softmax(outputs, dim=1)
         _, predictions = torch.max(outputs_sm, dim=1)
 
-        criterion_prediction = nn.CrossEntropyLoss()
-        loss_prediction = criterion_prediction(outputs, predictions)
+        loss_prediction = criterion(outputs, predictions)
 
         gradients_prediction = torch.autograd.grad(loss_prediction, self.module_gradient.output, retain_graph=True)
         gradients_prediction = torch.abs(gradients_prediction[0])
         gradients_prediction = torch.sum(gradients_prediction, dim=(2, 3))
 
         first_term_sum = 0
-        second_term_sum = 0
 
         for target, gradients_target_ind in zip(targets, gradients_target):
             for feature_map_ind_sum, feature_map_avg_sum in zip(gradients_target_ind, self.gradients[target]):
                 multiplier = 1.0 if feature_map_avg_sum < threshold else 0.0
                 first_term_sum += multiplier * feature_map_ind_sum
 
-        for gradients_prediction_ind in gradients_prediction:
-            second_term_sum += torch.sum(gradients_prediction_ind)
+        second_term_sum = torch.sum(gradients_prediction)
 
         loss_channel += first_term_sum + second_term_sum
 
