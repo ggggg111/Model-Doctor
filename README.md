@@ -153,6 +153,7 @@ python src\treating.py
     -- learning_rate [learning_rate]
     -- epochs [epochs]
     -- gradients_path [gradients_path]
+    -- masks_path [masks_path]
     -- delta [delta]
 ```
 
