@@ -20,9 +20,8 @@ class TreatingStage:
 
         self.conv2d_layers = load_model_layers(self.model, nn.Conv2d)
 
-        self.modules_gradient = [GradientHook(module, self.device) for module in self.conv2d_layers]
-        self.modules_noise = [NoiseHook(module, self.delta, self.device) for module in self.conv2d_layers]
-        self.module_gradient = self.modules_gradient[-1]
+        self.module_gradient = GradientHook(self.conv2d_layers[-1], self.device)
+        self.module_noise = NoiseHook(self.conv2d_layers[-1], self.delta, self.device)
 
         self.gradients = torch.from_numpy(load_model_gradients(self.gradients_path)[-1])
 
@@ -79,8 +78,8 @@ class TreatingStage:
 
         return loss_spatial / outputs.shape[0]
 
-    def apply_noise(self, module):
-        module.apply_noise_hook()
+    def apply_noise(self):
+        self.module_noise.apply_noise_hook()
 
-    def remove_noise(self, module):
-        module.remove_noise_hook()
+    def remove_noise(self):
+        self.module_noise.remove_noise_hook()
