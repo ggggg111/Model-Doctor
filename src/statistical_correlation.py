@@ -62,6 +62,11 @@ parser.add_argument(
     help="Class of the image"
 )
 
+parser.add_argument(
+    "--layer_index", type=int, required=True,
+    help="Which 2D convolutional layer to view"
+)
+
 args = parser.parse_args()
 
 
@@ -75,6 +80,7 @@ def main():
     checkpoint_path = os.path.join(checkpoints_path, checkpoint_file)
     image_path = args.image_path
     image_class = args.image_class
+    layer_index = args.layer_index
 
     test_data = load_dataset(data_path, dataset, "test")
     num_classes = len(test_data.classes)
@@ -101,9 +107,9 @@ def main():
 
     output = model(image_tensor)
 
-    gradients = individual_gradients.compute_individual_gradients(output, class_tensor)
+    gradients_layers = individual_gradients.compute_individual_gradients(output, class_tensor)
 
-    sns.heatmap(gradients.cpu().detach().numpy(), linewidth=0.5)
+    sns.heatmap(gradients_layers[layer_index].cpu().detach().numpy(), linewidth=0.5)
     plt.show()
 
 
