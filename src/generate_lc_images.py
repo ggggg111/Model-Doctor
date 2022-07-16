@@ -84,9 +84,9 @@ args = parser.parse_args()
 def main():
     data_path = args.data_path
     dataset = args.dataset
-    low_confidence_path = os.path.join(args.low_confidence_path, dataset)
     device = torch.device(args.device)
     model_name = args.model_name
+    low_confidence_path = os.path.join(args.low_confidence_path, dataset, model_name)
     checkpoints_path = os.path.join(args.checkpoints_path, dataset)
     checkpoint_file = args.checkpoint_file
     checkpoint_path = os.path.join(checkpoints_path, checkpoint_file)

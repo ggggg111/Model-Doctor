@@ -96,13 +96,14 @@ python src\generate_lc_images.py
 
 ### Generate low-confidence images masks
 
-In this part, the idea is to mask the low-confidence images so that the background has a value of 1 and the rest has a value of 0. The low-confidence images have to be annotated manually, using a polygonal annotation tool. In this case, LabelMe has been used. When the low-confidence images have been labelled, they need to be converted into a mask. Note that at this point, only one polygonal shape is supported, so the drawing of the polygon should correspond to the outline of the object.
+In this part, the idea is to mask the low-confidence images so that the background has a value of 1 and the rest has a value of 0. The low-confidence images have to be annotated manually, using a polygonal annotation tool. In this case, LabelMe has been used. When the low-confidence images have been labeled, they need to be converted into a mask. Note that at this point, only one polygonal shape is supported, so the drawing of the polygon should correspond to the outline of the object. More info on the corresponding folder, as how to structure the annotations.
 
 ```
 python src\annotations_to_mask.py
     -- low_confidence_annotations_path [low_confidence_annotations_path]
     -- low_confidence_masks_path [low_confidence_masks_path]
     -- dataset [dataset]
+    -- model_name [model_name]
 ```
 
 ### Generate the gradients

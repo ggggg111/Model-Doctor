@@ -7,8 +7,8 @@ import numpy as np
 from labelme.utils import shape_to_mask
 
 
-def label_to_mask(annotations_root, masks_root, dataset):
-    annotations_path = os.path.join(annotations_root, dataset)
+def label_to_mask(annotations_root, masks_root, dataset, model_name):
+    annotations_path = os.path.join(annotations_root, dataset, model_name)
 
     for path, _, files in os.walk(annotations_path):
         save_file_path = path.replace(annotations_root, masks_root)
