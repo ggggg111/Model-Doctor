@@ -62,10 +62,9 @@ class TreatingStage:
             mask = torch.squeeze(mask, 0)
 
             hadamard_product = torch.mul(mask, gradient)
-            fmap_sum = torch.sum(hadamard_product, dim=(1, 2))
-            k_sum = torch.sum(fmap_sum)
+            sum = torch.sum(hadamard_product)
 
-            loss_spatial += k_sum
+            loss_spatial += sum
 
         return loss_spatial / outputs.shape[0]
 
