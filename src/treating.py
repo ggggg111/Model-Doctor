@@ -145,7 +145,9 @@ def main():
                 mask_tensor_batch.append(mask_transform(masks[target][mask_counters[target]]).to(device))
                 mask_counters[target] = mask_counters[target] % (masks_per_class - 1) + 1
 
+            treating_stage.apply_noise()
             outputs = model(data)
+            treating_stage.remove_noise()
 
             loss_original = criterion(outputs, targets)
             loss_channel = treating_stage.channel_loss(outputs, targets)
