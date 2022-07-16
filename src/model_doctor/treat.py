@@ -79,10 +79,8 @@ class TreatingStage:
 
         return loss_spatial / outputs.shape[0]
 
-    def apply_noise(self):
-        for module_noise in self.modules_noise:
-            module_noise.apply_noise_hook()
+    def apply_noise(self, module):
+        module.apply_noise_hook()
 
-    def remove_noise(self):
-        for module_noise in self.modules_noise:
-            module_noise.remove_noise_hook()
+    def remove_noise(self, module):
+        module.remove_noise_hook()
