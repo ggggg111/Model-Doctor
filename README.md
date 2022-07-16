@@ -3,7 +3,7 @@
 ## Overview
 
 This is an unofficial implementation of the [Model Doctor: A Simple Gradient Aggregation Strategy for Diagnosing and
-Treating CNN Classifiers](https://arxiv.org/abs/2112.04934).
+Treating CNN Classifiers](https://arxiv.org/abs/2112.04934) paper.
 
 ## Requirements and Installation
 
@@ -77,7 +77,7 @@ python src\generate_hc_images.py
 
 ### Extract low-confidence samples
 
-Low-confidence samples are also required. By default, a number of 20 low-confidence samples are extracted for each class of the selected dataset. Furthermore, a low-confidence sample is one where the model has a maximum of 80% (non-inclusive) and a minimum of 60% (inclusive) of confidence that it is from the correct class. Note that the low-confidence samples are used for the spatial loss. The samples don't need to be from the correct class that the model has predicted because, otherwise, due to the high-accuracy of the already trained model, there are not enough samples to extract.
+Low-confidence samples are also required. By default, a number of 20 low-confidence samples are extracted for each class of the selected dataset. Furthermore, a low-confidence sample is one where the model has a maximum of 80% (non-inclusive) and a minimum of 60% (inclusive) of confidence that it is from such class. Note that the low-confidence samples are used for the spatial loss. The samples don't need to be from the correct class that the model has predicted because, otherwise, due to the high-accuracy of the already trained model, there are not enough samples to extract.
 
 ```
 python src\generate_lc_images.py
