@@ -59,7 +59,7 @@ python src\test.py
 
 ### Extract high-confidence samples
 
-The next step is to extract high-confidence samples. By default, a number of 100 high-confidence samples are extracted for each class of the selected dataset. Furthermore, a high-confidence sample is one where the model has a 90% (inclusive) or more of confidence that it is from the correct class. Note that the high-confidence samples are used for the channel loss. The samples must be from the correct class that the model has predicted.
+The next step is to extract high-confidence samples. By default, a number of 100 high-confidence samples are extracted for each class of the selected dataset. Furthermore, a high-confidence sample is one where the model has a 90% (inclusive) or more of confidence that it is from the correct class. Note that the high-confidence samples are used for the channel loss.
 
 ```
 python src\generate_hc_images.py
