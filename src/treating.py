@@ -101,7 +101,7 @@ def main():
     epochs = args.epochs
     gradients_path = os.path.join(args.gradients_path, dataset, model_name)
     delta = args.delta
-    masks_path = os.path.join(args.masks_path, dataset)
+    masks_path = os.path.join(args.masks_path, dataset, model_name)
 
     train_data = load_dataset(data_path, dataset, "train")
     num_classes = len(train_data.classes)
