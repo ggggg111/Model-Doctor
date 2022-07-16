@@ -124,7 +124,7 @@ python src\diagnosing.py
 
 ### View correlation distribution
 
-The average correlation distribution of the feature maps of any 2D convolutional layer of the model can be viewed as a heatmap. The sample image and its class have to be given in the command, as well as which layer to view.
+The average correlation distribution of the feature maps of any 2D convolutional layer of the model and the summed derivative maps can be viewed as a heatmap. The sample image and its ground-truth class have to be given in the command, as well as which layer to view.
 
 ```
 python src\statistical_correlation.py

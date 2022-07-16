@@ -107,9 +107,13 @@ def main():
 
     output = model(image_tensor)
 
-    gradients_layers = individual_gradients.compute_individual_gradients(output, class_tensor)
+    gradients_k, gradients_f = individual_gradients.compute_individual_gradients(output, class_tensor)
 
-    sns.heatmap(gradients_layers[layer_index].cpu().detach().numpy(), linewidth=0.5)
+    fig, axes = plt.subplots(nrows=2)
+
+    sns.heatmap(gradients_k[layer_index].cpu().detach().numpy(), linewidth=0.0, ax=axes[0], cmap=sns.color_palette("rocket", as_cmap=True))
+    sns.heatmap(gradients_f[layer_index].cpu().detach().numpy(), linewidth=0.0, ax=axes[1], cmap=sns.color_palette("rocket", as_cmap=True))
+
     plt.show()
 
 

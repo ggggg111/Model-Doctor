@@ -4,3 +4,4 @@ from .load_model_gradients import load_model_gradients
 from .load_dataset import load_dataset
 from .annotation_to_mask import label_to_mask
 from .load_masks import load_masks
+from .normalize_tensor import normalize_tensor
