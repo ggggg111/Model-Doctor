@@ -167,7 +167,7 @@ def main():
         print(f"Epoch: [{epoch + 1}/{epochs}], Loss_all: {loss_all_epoch / len(train_loader)}, Loss_orig: {loss_original_epoch / len(train_loader)}")
         print(f"Loss_ch: {loss_channel_epoch / len(train_loader)}, Loss_sp: {loss_spatial_epoch / len(train_loader)}")
 
-    torch.save(model.state_dict(), os.path.join(checkpoint_path, f"{model_name}_md.pt"))
+    torch.save(model.state_dict(), os.path.join(checkpoints_path, f"{model_name}_md.pt"))
 
 
 if __name__ == "__main__":
