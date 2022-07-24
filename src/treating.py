@@ -113,8 +113,8 @@ def main():
     )
 
     mask_transform = T.Compose([
-        T.Resize(128),
-        T.ToTensor()
+        T.ToTensor(),
+        T.Resize(128)
     ])
 
     masks_per_class = len([image_path for image_path in os.listdir(os.path.join(masks_path, "class_0"))])
