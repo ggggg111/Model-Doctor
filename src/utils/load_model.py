@@ -37,9 +37,6 @@ def load_model(model_name, num_classes, device):
     elif model_name == "efficientnet_b2":
         model = efficientnet_b2(pretrained=False, progress=False, num_classes=num_classes).to(device)
 
-    elif model_name == "googlenet":
-        model = googlenet(pretrained=False, progress=False, num_classes=num_classes).to(device)
-
     elif model_name == "mobilenet_v2":
         model = mobilenet_v2(pretrained=False, progress=False, num_classes=num_classes).to(device)
 

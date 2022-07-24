@@ -170,7 +170,6 @@ The following models are currently supported:
 - ResNeXt50.
 - DenseNet121.
 - EfficientNetV2.
-- GoogLeNet.
 - MobileNetV2.
 - InceptionV3.
 - ShuffleNetV2.
