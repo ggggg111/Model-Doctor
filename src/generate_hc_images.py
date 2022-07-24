@@ -14,19 +14,20 @@ from tqdm import tqdm
 
 from utils import load_dataset
 from utils import load_model
+from utils import normalize_tensor
 
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
-    "--data_path", type=str, default=os.path.join("d:", "Datasets", "Detection"),
+    "--data_path", type=str, default=os.path.join("d:", "Datasets", "Detection", "CIFAR10"),
     help="Directory path to the dataset"
 )
 
 parser.add_argument(
     "--dataset", type=str,
     choices=("mnist", "fashion_mnist", "cifar10", "cifar100", "svhn", "stl10"),
-    default="fashion_mnist",
+    default="cifar10",
     help="Name of the dataset"
 )
 
@@ -46,7 +47,7 @@ parser.add_argument(
         "alexnet", "vgg16", "resnet50", "wide_resnet50_2", "resnext50_32x4d", "densenet121", "efficientnet_b2",
         "googlenet", "mobilenet_v2", "inception_v3", "shufflenet_v2_x1_0", "squeezenet1_0", "mnasnet1_0"
     ),
-    default="alexnet",
+    default="resnet50",
     help="Which model to use"
 )
 
@@ -56,7 +57,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--checkpoint_file", type=str, default="alexnet.pt",
+    "--checkpoint_file", type=str, default="resnet50.pt",
     help="Name of the checkpoint file used, including the extension"
 )
 
@@ -94,14 +95,7 @@ def main():
     if not os.path.exists(high_confidence_path):
         os.makedirs(high_confidence_path)
 
-    transform = T.Compose([
-        T.Grayscale(3),
-        T.Resize(256),
-        T.RandomAffine(degrees=(-10, 10), translate=(0.1, 0.1), scale=(0.5, 0.75)),
-        T.ToTensor()
-    ])
-
-    test_data = load_dataset(data_path, dataset, "test", transform)
+    test_data = load_dataset(data_path, dataset, "test")
     num_classes = len(test_data.classes)
 
     test_loader = DataLoader(
@@ -137,7 +131,7 @@ def main():
 
                 if confidence > min_confidence and image_class_counters[target] < num_images:
                     image_path = class_path_dir + f"{target}"
-                    save_image(data[index], os.path.join(image_path, f"{image_class_counters[target]}" + ".png"))
+                    save_image(normalize_tensor(data[index]), os.path.join(image_path, f"{image_class_counters[target]}" + ".png"))
                     image_class_counters[target] += 1
 
 

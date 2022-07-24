@@ -22,7 +22,7 @@ parser.add_argument(
 parser.add_argument(
     "--dataset", type=str,
     choices=("mnist", "fashion_mnist", "cifar10", "cifar100", "svhn", "stl10"),
-    default="fashion_mnist",
+    default="cifar10",
     help="Name of the dataset"
 )
 
@@ -37,7 +37,7 @@ parser.add_argument(
         "alexnet", "vgg16", "resnet50", "wide_resnet50_2", "resnext50_32x4d", "densenet121", "efficientnet_b2",
         "googlenet", "mobilenet_v2", "inception_v3", "shufflenet_v2_x1_0", "squeezenet1_0", "mnasnet1_0"
     ),
-    default="alexnet",
+    default="resnet50",
     help="Which model to use"
 )
 
@@ -47,7 +47,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--checkpoint_file", type=str, default="alexnet.pt",
+    "--checkpoint_file", type=str, default="resnet50.pt",
     help="Name of the checkpoint file used, including the extension"
 )
 
