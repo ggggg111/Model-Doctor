@@ -151,8 +151,8 @@ def main():
             treating_stage.remove_noise()
 
             loss_original = criterion(outputs, targets)
-            loss_channel = treating_stage.channel_loss(outputs, targets)
-            loss_spatial = treating_stage.spatial_loss(outputs, targets, mask_tensor_batch)
+            loss_channel = treating_stage.channel_loss(outputs)
+            loss_spatial = treating_stage.spatial_loss(outputs, mask_tensor_batch)
 
             loss_all = loss_original + loss_channel + loss_spatial
 

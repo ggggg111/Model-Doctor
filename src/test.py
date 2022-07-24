@@ -46,7 +46,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--checkpoint_file", type=str, default="resnet50.pt",
+    "--checkpoint_file", type=str, default="resnet50_md.pt",
     help="Name of the checkpoint file used, including the extension"
 )
 
