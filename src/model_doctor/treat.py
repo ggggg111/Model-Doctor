@@ -25,7 +25,7 @@ class TreatingStage:
 
         self.gradients = torch.from_numpy(load_model_gradients(self.gradients_path)[-1])
 
-    def channel_loss(self, outputs, threshold=1.0):
+    def channel_loss(self, outputs, threshold):
         loss_channel = 0
 
         criterion = nn.CrossEntropyLoss()

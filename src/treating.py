@@ -2,7 +2,6 @@ import os
 import argparse
 
 import torch
-import cv2
 import torchvision.transforms as T
 
 from torch.utils.data import DataLoader
@@ -85,6 +84,11 @@ parser.add_argument(
     help="Delta value for the noise"
 )
 
+parser.add_argument(
+    "--threshold", type=float, default=1.0,
+    help="Threshold value of channel loss"
+)
+
 args = parser.parse_args()
 
 
@@ -101,6 +105,7 @@ def main():
     epochs = args.epochs
     gradients_path = os.path.join(args.gradients_path, dataset, model_name)
     delta = args.delta
+    threshold = args.threshold
     masks_path = os.path.join(args.masks_path, dataset, model_name)
 
     train_data = load_dataset(data_path, dataset, "train")
@@ -151,7 +156,7 @@ def main():
             treating_stage.remove_noise()
 
             loss_original = criterion(outputs, targets)
-            loss_channel = treating_stage.channel_loss(outputs)
+            loss_channel = treating_stage.channel_loss(outputs, threshold)
             loss_spatial = treating_stage.spatial_loss(outputs, mask_tensor_batch)
 
             loss_all = loss_original + loss_channel + loss_spatial
